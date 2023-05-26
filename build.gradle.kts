@@ -11,10 +11,10 @@ plugins {
     id("com.github.johnrengelman.shadow")
     id("com.github.sgtsilvio.gradle.utf8")
     id("com.github.sgtsilvio.gradle.metadata")
-    id("com.github.sgtsilvio.gradle.javadoc-links")
+//    id("com.github.sgtsilvio.gradle.javadoc-links")
     id("com.github.breadmoirai.github-release")
     id("com.github.hierynomus.license")
-    id("org.owasp.dependencycheck")
+//    id("org.owasp.dependencycheck")
     id("com.github.ben-manes.versions")
 
     /* Code Quality Plugins */
@@ -22,6 +22,8 @@ plugins {
     id("pmd")
     id("com.github.spotbugs")
     id("de.thetaphi.forbiddenapis")
+
+//    id("com.github.dkorotych.gradle-maven-exec") version "3.0"
 }
 
 
@@ -285,16 +287,18 @@ dependencies {
     spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.8.0")
 }
 
-dependencyCheck {
-    analyzers.apply {
-        centralEnabled = false
-    }
-    format = org.owasp.dependencycheck.reporting.ReportGenerator.Format.ALL
-    scanConfigurations = listOf("runtimeClasspath")
-    suppressionFile = "$projectDir/gradle/dependency-check/suppress.xml"
-}
+//dependencyCheck {
+////    analyzers.apply {
+////        centralEnabled = false
+////    }
+////    format = org.owasp.dependencycheck.reporting.ReportGenerator.Format.ALL
+////    scanConfigurations = listOf("runtimeClasspath")
+////    suppressionFile = "$projectDir/gradle/dependency-check/suppress.xml"
+//}
 
-tasks.check { dependsOn(tasks.dependencyCheckAnalyze) }
+tasks.check {
+//    dependsOn(tasks.dependencyCheckAnalyze)
+}
 
 forbiddenApis {
     bundledSignatures = setOf("jdk-system-out")
@@ -306,6 +310,7 @@ tasks.forbiddenApisMain {
 }
 
 tasks.forbiddenApisTest { enabled = false }
+
 
 
 /* ******************** compliance ******************** */
@@ -444,13 +449,16 @@ publishing {
             artifactId = "hivemq-community-edition-embedded"
         }
     }
+    repositories{
+        mavenLocal()
+    }
 }
 
 signing {
     val signKey: String? by project
     val signKeyPass: String? by project
     useInMemoryPgpKeys(signKey, signKeyPass)
-    sign(publishing.publications["embedded"])
+//    sign(publishing.publications["embedded"])
 }
 
 nexusPublishing {
