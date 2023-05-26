@@ -247,6 +247,20 @@ public class HiveMQServer {
         afterStart();
     }
 
+    public void start(final @Nullable EmbeddedExtension embeddedExtension) throws Exception {
+
+        long startTime = System.nanoTime();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(this::stop, "shutdown-thread," + hivemqId.get()));
+
+        bootstrap();
+        startInstance(embeddedExtension);
+
+        log.info("Started HiveMQ in {}ms", TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime));
+
+        afterStart();
+    }
+
     public void stop() {
         if (injector == null) {
             return;
