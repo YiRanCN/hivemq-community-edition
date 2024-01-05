@@ -24,6 +24,7 @@ import com.hivemq.extensions.executor.task.PluginOutTask;
 import com.hivemq.extensions.executor.task.PluginOutTaskContext;
 import com.hivemq.extensions.executor.task.PluginTask;
 import com.hivemq.extensions.executor.task.PluginTaskContext;
+import com.hivemq.extensions.executor.task.PluginTaskExecutor;
 import com.hivemq.extensions.executor.task.PluginTaskInput;
 import com.hivemq.extensions.executor.task.PluginTaskOutput;
 
@@ -205,4 +206,6 @@ public interface PluginTaskExecutorService {
         }
     }
     */
+
+    PluginTaskExecutor[] getTaskExecutors();
 }

@@ -147,4 +147,9 @@ public class PluginTaskExecutorServiceImpl implements PluginTaskExecutorService 
             }
         }
     }
+
+    @Override
+    public PluginTaskExecutor[] getTaskExecutors(){
+        return taskExecutors;
+    }
 }

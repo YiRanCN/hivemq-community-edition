@@ -350,4 +350,8 @@ public class PluginTaskExecutor {
             return (PluginTaskOutput) pluginTask.apply(task.getInputObject(), task.getOutputObject());
         }
     }
+
+    public int getQueueSize(){
+        return taskQueues.size();
+    }
 }
