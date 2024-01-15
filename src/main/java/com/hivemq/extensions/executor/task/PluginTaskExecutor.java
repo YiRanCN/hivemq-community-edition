@@ -22,6 +22,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.Striped;
+import com.hivemq.HiveMQServer;
 import com.hivemq.common.annotations.GuardedBy;
 import com.hivemq.extension.sdk.api.annotations.NotNull;
 import com.hivemq.extension.sdk.api.annotations.Nullable;
@@ -29,6 +30,8 @@ import com.hivemq.extension.sdk.api.annotations.ThreadSafe;
 import com.hivemq.extensions.ioc.annotation.PluginTaskQueue;
 import com.hivemq.util.Exceptions;
 import com.hivemq.util.ThreadFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -80,6 +83,8 @@ public class PluginTaskExecutor {
      * This striped lock is used to prevent concurrency issues when the queues are removed and added
      */
     private final @NotNull Striped<Lock> stripedLock = Striped.lock(100);
+
+    private static final Logger log = LoggerFactory.getLogger(PluginTaskExecutor.class);
 
     @Inject
     public PluginTaskExecutor(final @NotNull @PluginTaskQueue AtomicLong counterAllQueues) {
@@ -149,6 +154,7 @@ public class PluginTaskExecutor {
 
 
                         if (queue.isEmpty()) {
+                            log.info("run key = {} , queue is empty",key);
                             if (possiblyCleanupEmptyQueue(key)) {
                                 continue;
                             }
@@ -351,7 +357,7 @@ public class PluginTaskExecutor {
         }
     }
 
-    public int getQueueSize(){
-        return taskQueues.size();
+    public ConcurrentMap<String, Queue<PluginTaskExecution>> getTaskQueues(){
+        return taskQueues;
     }
 }
